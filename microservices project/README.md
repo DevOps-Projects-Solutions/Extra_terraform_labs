@@ -42,8 +42,9 @@ This project provides a RESTful API for uploading files to an S3 bucket using AP
 1. Generate a Pre-Signed URL:
 Replace myfile.txt with the name of your file and run the following command:
    ```bash
-   curl -X POST https://ji6wbv8gr6.execute-api.us-east-1.amazonaws.com/prod/files?fileName=myfile.txt
+   presigned_url=$(curl -X POST https://ji6wbv8gr6.execute-api.us-east-1.amazonaws.com/prod/files?fileName=myfile.txt | jq -r '.presignedUrl')
+   echo "Pre-signed URL: $presigned_url"
 2. Upload the File:
 Use the pre-signed URL returned in the previous step to upload your file: 
    ```bash
-   curl -X PUT -T myfile.txt "<presigned-url>" -H "Content-Type: application/octet-stream"
+   curl -X PUT -T myfile.txt "$presigned_url" -H "Content-Type: application/octet-stream"
